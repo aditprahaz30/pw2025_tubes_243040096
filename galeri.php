@@ -1,18 +1,20 @@
-<?php 
+<?php
 require "db/database.php";
 
 $querykategori = mysqli_query($conn, "SELECT * FROM kategori");
 
 // difilter sesuai kategori
-if(isset($_GET['kategori'])){
+if (isset($_GET['kategori'])) {
     $querykategori = mysqli_query($conn, " SELECT id FROM kategori WHERE nama='$_GET[kategori]' ");
     $kategoriid = mysqli_fetch_array($querykategori);
-    echo $kategoriid['id'];
+
+    $querygaleri = mysqli_query($conn, "SELECT * FROM galeri WHERE kategori_id='$kategoriid[id]'");
 }
 // galeri default
-else{
+else {
     $querygaleri = mysqli_query($conn, "SELECT * FROM galeri");
 }
+$countdata = mysqli_num_rows($querygaleri);
 
 ?>
 
@@ -31,53 +33,54 @@ else{
 </head>
 
 <body>
-<?php require 'nav.php' ?>
+    <?php require 'nav.php' ?>
 
-<div class="container-fluid banner-galeri d-flex ">
-    <div class="container title">
-        <h1>Galeri Kami</h1>
-    </div>
-</div>
-
-<!-- konten -->
- <section id="galeri">
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-3 mb-5">
-            <h3>Kategori</h3>
-            <ul class=list-group>
-    <?php while($kategori= mysqli_fetch_array($querykategori)){ ?>
-        <a href="galeri.php?kategori=<?= $kategori ['nama'];?>">
-            <li class="list-group-item"><?= $kategori['nama']; ?></li>
-        </a>
-                <?php } ?>
-            </ul>
+    <div class="container-fluid banner-galeri d-flex ">
+        <div class="container title">
+            <h1>Galeri Kami</h1>
         </div>
+    </div>
 
-        <div class="col-lg-9">
-            <h3 class="text-center mb-3">Karya</h3>
+    <!-- konten -->
+    <section id="galeri">
+        <div class="container py-5">
             <div class="row">
-                
-                <?php while ?>
+                <div class="col-lg-3 mb-5">
+                    <h3>Kategori</h3>
+                    <ul class=list-group>
+                        <?php while ($kategori = mysqli_fetch_array($querykategori)) { ?>
+                            <a href="galeri.php?kategori=<?= $kategori['nama']; ?>">
+                                <li class="list-group-item"><?= $kategori['nama']; ?></li>
+                            </a>
+                        <?php } ?>
+                    </ul>
+                </div>
 
-                <div class="col-md-4 mb-3">
-                    <div class="card h-100">
-                        <div class="image-box">
-                            <img src="dbimg/a1.jpg" class="card-img-top" alt="">
-                        </div>
-                        <div class="card-body">
-                            <h4 class="card-title">zhhx</h4>
-                            <p class="card-text-pelukis">fdagagd</p>
-                            <p class="card-text-tahun">xs</p>
-                            <a href="galeri-detail.php?nama=<?=$data['nama'];?>" class="btn-card">Lihat Karya</a>
-                        </div>
+                <div class="col-lg-9">
+                    <h3 class="text-center mb-3">Karya</h3>
+                    <div class="row">
+
+                        <?php while ($galeri = mysqli_fetch_array($querygaleri)) { ?>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100">
+                                    <div class="image-box">
+                                        <img src="dbimg/<?= $galeri['gambar']; ?>" class="card-img-top" alt="">
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title"><?= $galeri['nama'] ?></h4>
+                                        <p class="card-text-pelukis"><?= $galeri['pelukis'] ?></p>
+                                        <p class="card-text-tahun"><?= $galeri['tahun'] ?></p>
+                                        <a href="galeri-detail.php?nama=<?= $galeri['nama']; ?>" class="btn-card">Lihat Karya</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
- </section>
+    </section>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

@@ -10,7 +10,9 @@
     --max-width: 100vh;
     --transition-speed: 0.3s;
 }
-
+*{
+    z-index: 0;
+}
 body {
     background-color: var(--color-bg);
     color: var(--color-text-secondary);
@@ -74,6 +76,7 @@ h2 {
 .navbar {
     backdrop-filter: blur(3px);
     font-weight: 700;
+    z-index: 999;
 }
 
 .navbar .nav-link {
@@ -157,4 +160,12 @@ h2 {
 
 .card{
     background-color:var(--color-secondary);
+}
+
+
+.card-img-top{
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
 }
